@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拖拽Api demo</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/reseter.css/1.2.0/reseter.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #cecece;
+        }
+
+        .wrapper {
+            width: 500px;
+            height: 300px;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            align-items: center;
+        }
+
+        .area {
+            position: relative;
+            width: 35%;
+            height: 250px;
+            border: 1px dashed #000;
+        }
+
+        .area .bg-text {
+            color: #999;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        ul li {
+            line-height: 24px;
+            border-bottom: 1px solid #cecece;
+            text-align: center;
+            list-style: none;
+        }
+
+        ul {
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="area">
+            <ul class="list" id="drag"></ul>
+            <div class="bg-text">拖拽区</div>
+        </div>
+        <div class="area">
+            <ul class="list" id="place"></ul>
+            <div class="bg-text">放置区</div>
+        </div>
+    </div>
+    <script>
+        // 拖拽区域的列表数据
+        const dragList = [
+            {
+                id: 0,
+                text: '板块1'
+            },
+            {
+                id: 1,
+                text: '板块2'
+            },
+            {
+                id: 2,
+                text: '板块3'
+            }
+        ]
+
+        // 放置区域的列表数据
+        const placeList = []
+
+        const dragwrap = document.getElementById('drag')
+        const placewrap = document.getElementById('place')
+
+        // 根据数据加载列表
+        function loadLayout(mode = 'drag') {
+            let str1 = ``;
+            let str2 = ``
+            dragList.forEach(v => {
+                // 渲染时将 id 绑定到标签上，便于找到数据
+                str1 += `<li draggable="true" data-id='${v.id}'>${v.text}</li>`
+            })
+            placeList.forEach(v => {
+                // 渲染时将 id 绑定到标签上，便于找到数据
+                str2 += `<li draggable="true" data-id='${v.id}'>${v.text}</li>`
+            })
+            dragwrap.innerHTML = str1
+            placewrap.innerHTML = str2
+        }
+
+        loadLayout()
+
+        dragwrap.addEventListener('dragstart', function (e) {
+            // 拖拽标签对应数据的id
+            const id = e.target.dataset.id
+            e.dataTransfer.id = id
+        })
+
+        dragwrap.addEventListener('dragend', function (e) {
+            if (e.dataTransfer.id) {
+                const index = dragList.findIndex(v => v.id === parseInt(e.dataTransfer.id))
+                // 添加放置区数据
+                placeList.push(dragList[index])
+                // 删除原有
+                dragList.splice(index, 1)
+                loadLayout()
+            }
+            // 防止拖拉效果被重置，允许被拖拉的节点放入目标节点
+            event.preventDefault();
+        })
+    </script>
+</body>
+
+</html>
