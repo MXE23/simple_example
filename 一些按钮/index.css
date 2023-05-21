@@ -10,13 +10,14 @@
     height: 34px;
     font-size: 14px;
     color: #FFF;
-    background-color: #30a05c;
+    background-color: #267bfc;
     white-space: nowrap;
     outline: none;
     border: none;
     border-radius: 3px;
     position: relative;
 }
+
 .button:focus {
     outline: none;
 }
@@ -25,7 +26,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,.2);
+    background-color: rgba(0, 0, 0, .2);
     left: 0;
     top: 0;
     border-radius: 3px;
@@ -35,4 +36,33 @@
 
 .button:active .mask {
     opacity: 1;
+}
+
+.button::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0.4;
+    transition: .3s;
+    opacity: 0;
+    box-shadow: 0 0 0 6px #267bfc;
+    transition: .3s;
+}
+
+.button:active::after {
+    box-shadow: none;
+    opacity: 0.5;
+    transition: 0s;
+}
+
+.default {
+    background-color: transparent;
+    box-shadow: 0 2px 0 rgba(0,0,0,.02);
+    color: rgba(0,0,0,.88);
+    border: 1px solid #d9d9d9;
+}
+.default:hover {
+    border-color: #267bfc;
+    color: #267bfc;
 }
