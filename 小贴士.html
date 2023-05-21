@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小贴士</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/reseter.css/1.2.0/reseter.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            height: 100vh;
+            box-sizing: border-box;
+            background-color: #cecece;
+        }
+        .banxin {
+            width: 800px;
+            margin: 0 auto;
+        }
+        .tips {
+            border-radius: 5px;
+            background-color: #FFF;
+            border: 1px solid #eee;
+            padding: 20px;
+            position: relative;
+            margin: 20px 0;
+            --tip-color: #35829c;
+        }
+        .tips::before {
+            content: '';
+            display: block;
+            position: absolute;
+            left: -4px;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            border-radius: 2px;
+            background-color: var(--tip-color);
+        }
+
+        .red {
+            --tip-color: #c94544;
+        }
+        .warn {
+            --tip-color: #a76514;
+        }
+    </style>
+</head>
+<body>
+    <div class="banxin">
+        <div class="tips">小贴士</div>
+        <div class="tips red">小贴士</div>
+        <div class="tips warn">小贴士</div>
+    </div>
+</body>
+</html>
