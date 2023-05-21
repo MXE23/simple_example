@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>react-hooks todolist</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/react/16.13.1/umd/react.production.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/react-dom/16.13.1/umd/react-dom.production.min.js"></script>
+    <!-- babel -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>
+    <!-- bootstrap -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            width: 500px;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 根节点 -->
+    <div id="root"></div>
+    <script type="text/babel">
+        const App = React.createElement(() => {
+            const { useEffect, useState, useCallback, useMemo } = window.React;
+            // 任务列表
+            const [list, setList] = useState([])
+            // 输入框内容
+            const [inputVal, setInputVal] = useState('')
+
+            // 唯一id
+            let id = 0;
+
+            // 添加任务
+            const addList = useCallback(() => {
+                if (!inputVal) return
+                id++
+                setList(x => {
+                    return [...x, { id, compluted: false, content: inputVal }]
+                })
+            }, [inputVal])
+
+            // 切换任务状态
+            const toggleTask = useCallback((id) => {
+                setList(x => {
+                    const index = x.findIndex(v => v.id === id)
+                    x[index].compluted = !x[index].compluted
+                    return [...x]
+                })
+            }, [])
+
+            // 删除任务状态
+            const deleteTask = useCallback((id) => {
+                setList(x => {
+                    const index = x.findIndex(v => v.id === id)
+                    x.splice(index, 1)
+                    return [...x]
+                })
+            }, [])
+
+            // 输入框组件 JSX
+            const Input = (<div class="input-group">
+                <input type="text" class="form-control" placeholder="输入任务" value={inputVal} onChange={(e) => setInputVal(e.target.value)} aria-describedby="输入任务" />
+                <span class="input-group-addon" id="basic-addon2" onClick={addList}>添加任务</span>
+            </div>)
+
+            // 已完成的任务列表
+            const computedList = useMemo(() => {
+                if (!list || !list.length) return <ul></ul>
+                return <ul class='list-group'>
+                    {list.filter(v => v.compluted).map(v => {
+                        return <a class="list-group-item" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} key={v.id}>
+                            <div>{v.content}</div>
+                            <div class="btn-group" role="group" aria-label="...">
+                                <button type="button" class="btn btn-danger" onClick={() => deleteTask(v.id)}>删除</button>
+                            </div>
+                        </a>
+                    })}
+                </ul>
+            }, [list])
+            // 未完成的任务列表
+            const unComputedList = useMemo(() => {
+                if (!list || !list.length) return <ul></ul>
+                return <ul class='list-group'>
+                    {list.filter(v => !v.compluted).map(v => {
+                        return <a class="list-group-item" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} key={v.contnet}>
+                            <div>{v.content}</div>
+                            <div class="btn-group" role="group" aria-label="...">
+                                <button type="button" class="btn btn-success" onClick={() => toggleTask(v.id)}>完成</button>
+                                <button type="button" class="btn btn-danger" onClick={() => deleteTask(v.id)}>删除</button>
+                            </div>
+                        </a>
+                    })}
+                </ul>
+            }, [list])
+
+
+
+            // 最终返回的元素节点
+            return <div class="container">
+                {Input}
+                <div class="panel panel-default" style={{ marginTop: '1rem' }}>
+                    <div class="panel-heading">
+                        <h3 class="panel-title">未完成的任务</h3>
+                    </div>
+                    <div class="panel-body">
+                        {unComputedList}
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">已完成的任务</h3>
+                    </div>
+                    <div class="panel-body">
+                        {computedList}
+                    </div>
+                </div>
+            </div>
+        })
+
+        // 将创建的元素渲染到指定元素内
+        ReactDOM.render(App, document.getElementById("root"));
+    </script>
+</body>
+
+</html>

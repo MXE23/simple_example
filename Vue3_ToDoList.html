@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue3 todo list</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- element plus 组件库 -->
+    <!-- 引入样式 -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.3/index.css" rel="stylesheet">
+    <!-- 引入组件库 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.3/index.full.js"></script>
+    <!-- reset css -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/reseter.css/1.2.0/reseter.min.css" rel="stylesheet">
+    <style>
+        .container {
+            width: 500px;
+            margin: 50px auto;
+        }
+
+        .head {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .task-list {
+            margin-top: 20px;
+        }
+
+        .task {
+            display: flex;
+            margin: 10px 0;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="head">
+                <el-input v-model="inputVal" placeholder="请输入任务" style="margin-right: 20px;"></el-input>
+                <el-button type="primary" @click="addList">Add</el-button>
+            </div>
+            <div class="task-list">
+                <el-card class="box-card">
+                    <template #header>
+                        <div class="card-header">
+                            <span>任务列表</span>
+                        </div>
+                    </template>
+                    <div v-for="(item,index) in unCompletedTasks" :key="item.id" class="task">
+                        {{item.content}}
+                        <div class="btn-group">
+                            <el-button size='small' type="success" @click='toggleTask(item.id)'>完成</el-button>
+                            <el-popconfirm title="确定要删除吗？" @confirm="deleteTask(item.id)">
+                                <template #reference>
+                                    <el-button size='small' type="danger">删除</el-button>
+                                </template>
+                            </el-popconfirm>
+
+                        </div>
+                    </div>
+                </el-card>
+            </div>
+            <div class="task-list">
+                <el-card class="box-card">
+                    <template #header>
+                        <div class="card-header">
+                            <span>已完成任务</span>
+                        </div>
+                    </template>
+                    <div v-for="item in completedTasks" :key="item.id" class="task">
+                        {{item.content}}
+                        <div class="btn-group">
+                            <el-popconfirm title="确定要删除吗？" @confirm="deleteTask(item.id)">
+                                <template #reference>
+                                    <el-button size='small' type="danger">删除</el-button>
+                                </template>
+                            </el-popconfirm>
+                        </div>
+                    </div>
+                </el-card>
+            </div>
+        </div>
+    </div>
+    <script>
+        const { ref, computed ,createApp } = Vue
+        const app = createApp({
+            setup() {
+                const list = ref([])
+                const inputVal = ref('')
+                let id = 0
+
+                // 新增任务
+                function addList() {
+                    // id 自增 保证唯一
+                    id++
+                    // 任务的数据格式 {id,content,completed}
+                    list.value.unshift({ id, content: inputVal.value, completed: false })
+                }
+
+                function toggleTask(id) {
+                    const index = list.value.findIndex(v => v.id === id)
+                    list.value[index].completed = !list.value[index].completed
+                }
+
+                function deleteTask(id) {
+                    const index = list.value.findIndex(v => v.id === id)
+                    list.value.splice(index, 1)
+                }
+
+                // 已完成 任务
+                const completedTasks = computed(() => list.value.filter(v => v.completed))
+                // 未完成 任务
+                const unCompletedTasks = computed(() => list.value.filter(v => !v.completed))
+
+                return { inputVal, list, addList, completedTasks, unCompletedTasks, toggleTask, deleteTask }
+            }
+        })
+
+        app.use(ElementPlus);
+        app.mount('#app')
+    </script>
+</body>
+
+</html>
