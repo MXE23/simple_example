@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡片</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/reseter.css/1.2.0/reseter.min.css" rel="stylesheet">
+    <style>
+        .wrapper {
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .card {
+            border: 1px solid #f0f0f0;
+            width: 350px;
+            border-radius: 8px;
+            margin: 20px;
+            overflow: hidden;
+        }
+
+        .card-title {
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            box-sizing: border-box;
+            min-height: 56px;
+        }
+
+        .card-title span:first-child {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .card-title span:last-child {
+            font-size: 14px;
+            color: #3a87fc;
+        }
+
+        .card-content {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .bottom {
+            border: 0;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .img {
+            width: 240px;
+            transition: box-shadow 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+
+        .img:hover {
+            border-color: transparent;
+            box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+        }
+
+        .img .card-content {
+            padding: 0;
+        }
+
+        .img .card-title {
+            display: block;
+            padding: 20px;
+        }
+
+        .img .card-title div:first-child {
+            color: rgba(0, 0, 0, 0.88);
+            font-weight: 600;
+            font-size: 16px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            margin-bottom: 8px;
+        }
+
+        .img .card-title div:last-child {
+            color: rgba(0, 0, 0, 0.45);
+            font-size: 14px;
+        }
+
+        .btn {
+            padding: 0;
+        }
+
+        .btn span {
+            color: #999;
+            flex: 1;
+            text-align: center;
+        }
+
+        .btn span:nth-child(2) {
+            border-left: 1px solid #f0f0f0;
+            border-right: 1px solid #f0f0f0;
+        }
+
+        /* icon 样式 */
+        .feather {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            cursor: pointer;
+        }
+    </style>
+    <!-- 引入 feather-icon -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="card">
+            <div class="card-title">
+                <span>卡片标题</span>
+                <span><a>更多</a></span>
+            </div>
+            <div class="card-content">
+                <div style="height: 200px;background-color: #1f71fc;"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
+                <div style="height: 200px;background-color: #1f71fc;"></div>
+            </div>
+            <div class="card-title bottom">
+                <span>卡片标题</span>
+                <span><a>更多</a></span>
+            </div>
+        </div>
+
+        <div class="card img">
+            <div class="card-content">
+                <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" alt="example">
+            </div>
+            <div class="card-title">
+                <div>Europe Street beat</div>
+                <div><a>www.instagram.com</a></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
+                <div style="height: 200px;background-color: #1f71fc;"></div>
+            </div>
+            <div class="card-title btn bottom">
+                <span><i data-feather="settings"></i></span>
+                <span><i data-feather="edit-3"></i></span>
+                <span style="color: #999;"><i data-feather="aperture"></i></span>
+            </div>
+        </div>
+    </div>
+    <script>
+        feather.replace()
+    </script>
+</body>
+
+</html>
