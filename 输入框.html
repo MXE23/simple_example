@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索框</title>
+    <!-- 引入 feather-icon -->
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/feather-icons/4.29.0/feather.min.js"></script> -->
+    <!-- 引入 google  Material icon -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .search-item {
+            position: relative;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .search-item input {
+            outline: none;
+            border: 0;
+            height: 32px;
+            padding-left: 32px;
+            border-radius: 8px;
+            border: 1px solid #d7d8da;
+            transition: border-color .3s;
+        }
+
+        .search-item .icon {
+            position: absolute;
+            font-size: 18px;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .search-item input:focus {
+            border: 1px solid #5e7ce0;
+            box-shadow: 0 0 0 4px rgba(94, 124, 224, .08);
+        }
+
+        /* 右侧icon */
+        .right-icon input {
+            padding-left: 10px;
+            padding-right: 32px;
+        }
+
+        .right-icon .icon {
+            left: unset;
+            right: 8px;
+        }
+
+        .clear-icon {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            font-size: 18px;
+            transform: translateY(-50%);
+            display: none;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        /* group */
+        .group input {
+            border-radius: 0;
+            padding: 0 10px;
+        }
+        .group {
+            display: flex;
+        }
+        .group .input-label{
+            display: flex;
+            background-color: #fafafc;
+            border: 1px solid #d7d8da;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 32px;
+            padding: 0 10px;
+        }
+
+        .group .input-label:first-child {
+            border-right: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .group .input-label:last-child {
+            border-left: 0;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="search-item">
+            <span class="material-icons icon">&#xe8b6;</span>
+            <input type="text" placeholder="左侧icon" />
+        </div>
+
+        <div class="search-item right-icon">
+            <input type="text" placeholder="右侧icon" />
+            <span class="material-icons icon">&#xe8b6;</span>
+        </div>
+
+        <div class="search-item" id="item">
+            <span class="material-icons icon">&#xe8b6;</span>
+            <input type="text" placeholder="带清除按钮的input" oninput="handleInput()" />
+            <span class="material-icons clear-icon" onclick="clearInput()">&#xe5cd;</span>
+        </div>
+
+        <div class="search-item group">
+            <span class="input-label">https://www.</span>
+            <input type="text" placeholder="请输入" />
+            <span class="input-label">.com</span>
+        </div>
+    </div>
+    <script>
+        // 输入框主体
+        const item = document.getElementById('item')
+        // 输入框
+        let inputItem = null
+        // 清除icon
+        let clearIcon = null
+
+        for (let el of item.children) {
+            if (el.nodeName.toUpperCase() === 'INPUT') {
+                inputItem = el
+                break
+            }
+        }
+
+        for (let el of item.children) {
+            if (el.className.indexOf('clear-icon') > -1) {
+                clearIcon = el
+                break
+            }
+        }
+
+        // 清除
+        function clearInput() {
+            inputItem.value = ''
+            initClear()
+        }
+
+        // 清除按钮的显示隐藏
+        function initClear() {
+            if (!clearIcon) return
+            clearIcon.style.display = inputItem.value ? 'inline' : 'none'
+        }
+
+        // 输入框输入事件
+        function handleInput() {
+            initClear()
+        }
+    </script>
+</body>
+
+</html>
