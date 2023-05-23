@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽屉</title>
+    <style>
+        .drawer-container {
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .drawer-mask {
+            background-color: rgba(0, 0, 0, .3);
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            opacity: 0;
+        }
+
+        .drawer-content {
+            height: 100%;
+            background-color: #FFF;
+            position: absolute;
+            overflow: auto;
+        }
+
+        .left,
+        .right {
+            top: 0;
+            height: 100%;
+        }
+
+        .top,
+        .bottom {
+            left: 0;
+            width: 100%;
+        }
+    </style>
+    <!-- 引入 animatejs -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+
+<body style="background-color: #cecece;">
+    <button onclick="openDrawer('top')">上</button>
+    <button onclick="openDrawer('bottom')">下</button>
+    <button onclick="openDrawer('left')">左</button>
+    <button onclick="openDrawer('right')">右</button>
+
+    <div class="drawer-container" id="drawer">
+        <div class="drawer-mask" onclick="closeDrawer()"></div>
+
+        <div class="drawer-content left"></div>
+        <div class="drawer-content right"></div>
+        <div class="drawer-content top"></div>
+        <div class="drawer-content bottom"></div>
+    </div>
+
+    <script>
+        const drawer = document.getElementById('drawer')
+        // 抽屉的参数
+        const drawerWidth = 500
+        const drawerHeight = 250
+        // 抽屉遮罩、抽屉内容
+        const drawMask = drawer.children[0]
+
+        // 初始化 上下左右 位置
+        function initDrawer() {
+            for (let el of drawer.children) {
+                if (el.className.indexOf('left') > -1) {
+                    el.style.width = drawerWidth + 'px'
+                    el.style.left = -drawerWidth + 'px'
+                } else if (el.className.indexOf('right') > -1) {
+                    el.style.width = drawerWidth + 'px'
+                    el.style.right = -drawerWidth + 'px'
+                } else if (el.className.indexOf('top') > -1) {
+                    el.style.height = drawerHeight + 'px'
+                    el.style.top = -drawerHeight + 'px'
+                } else if (el.className.indexOf('bottom') > -1) {
+                    el.style.height = drawerHeight + 'px'
+                    el.style.bottom = -drawerHeight + 'px'
+                }
+            }
+        }
+
+        initDrawer()
+
+        // 目标方向
+        let currentDir = ''
+        // 打开抽屉
+        function openDrawer(dir = 'right') {
+            drawer.style.pointerEvents = 'auto'
+            drawer.style.userSelect = 'auto'
+
+            currentDir = dir
+
+            anime({
+                targets: '#drawer .drawer-mask',
+                opacity: 1,
+                duration: 300
+            })
+
+            anime({
+                targets: '#drawer .' + dir,
+                [dir]: 0,
+                easing: 'easeInOutQuart',
+                duration: 300
+            })
+        }
+
+        // 关闭抽屉
+        function closeDrawer() {
+            // 让dom结构不可选中和触发事件
+            drawer.style.pointerEvents = 'none'
+            drawer.style.userSelect = 'none'
+            
+            anime({
+                targets: '#drawer .drawer-mask',
+                opacity: 0,
+                duration: 300
+            })
+
+            if (currentDir === 'left' || currentDir === 'right') {
+                anime({
+                    targets: '#drawer .' + currentDir,
+                    [currentDir]: -drawerWidth + 'px',
+                    easing: 'easeInOutQuart',
+                    duration: 300
+                })
+            } else {
+                anime({
+                    targets: '#drawer .' + currentDir,
+                    [currentDir]: -drawerHeight + 'px',
+                    easing: 'easeInOutQuart',
+                    duration: 300
+                })
+            }
+        }
+    </script>
+</body>
+
+</html>
