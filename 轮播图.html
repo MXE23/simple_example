@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮播图</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/reseter.css/1.2.0/reseter.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            padding: 20px;
+            box-sizing: border-box;
+
+        }
+
+        .carousel-item {
+            width: 500px;
+            height: 250px;
+            background-color: #333;
+        }
+
+        .carousel {
+            width: 500px;
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-list {
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+        }
+    </style>
+    <script src="https://cdn.bootcdn.net/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="carousel" id="carousel" onmouseenter="pause()" onmouseleave="play()">
+            <div class="carousel-list">
+                <div class="carousel-item">
+                    <img src="https://tse3-mm.cn.bing.net/th/id/OIP-C.4HG0RNxfLx8CAHhwg8KJoQHaD-?w=329&h=180&c=7&r=0&o=5&pid=1.7"
+                        alt="">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://tse4-mm.cn.bing.net/th/id/OIP-C.l0LCV9pxPLE3ufzYnUtPfAHaEK?w=319&h=180&c=7&r=0&o=5&pid=1.7"
+                        alt="">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://tse3-mm.cn.bing.net/th/id/OIP-C.anc86VWrgHloyCqhfEPBSQHaEK?w=310&h=180&c=7&r=0&o=5&pid=1.7"
+                        alt="">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://tse2-mm.cn.bing.net/th/id/OIP-C.h1dMNj-do7-qv2X1KAwtjwHaEK?w=311&h=180&c=7&r=0&o=5&pid=1.7"
+                        alt="">
+                </div>
+            </div>
+            <div class="dot-list">
+                <span class="active"></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 每一项的长度
+        const itemWidth = 500
+        // 轮播图主体
+        const carousel = document.getElementById('carousel')
+        // item 列表
+        const list = document.querySelector('#carousel>.carousel-list')
+        let duration = 1000
+
+        let autoAnimate = null
+
+        function carouselPlay() {
+            const frameList = new Array(3).fill(0).map((v, i) => ({
+                left: -(itemWidth * i)
+            }))
+            frameList.push({ left: 0 })
+            autoAnimate = anime({
+                targets: list,
+                keyframes: frameList,
+                duration: 6000,
+                easing: 'easeOutElastic(1, .8)',
+                loop: true
+            });
+        }
+
+        carouselPlay()
+
+
+        // 鼠标移入暂停
+        function pause() {
+            autoAnimate.pause()
+        }
+
+        // 鼠标移出播放
+        function play() {
+            autoAnimate.play()
+        }
+    </script>
+</body>
+
+</html>
